@@ -126,8 +126,28 @@ if run_process.returncode == 0:
   print("dotnet run executed successfully!")
 else:
   print(f"Error executing dotnet run:\n{run_process.stderr}")
-
-# Debugging command (redundant, but kept for clarity)
-# !dotnet run  # This command is already executed above!
 ```
 
+*   **`import os, import subprocess`**: Imports necessary Python modules for file system operations and running subprocesses.
+
+*   **`project_directory = "/content/PicoGK_Colab" ... os.chdir(project_directory)`**: Sets the working directory to the .NET project directory. This ensures that the subsequent commands are executed in the correct location.
+
+*   **`def CreateProgramCS(file_name, code): ...`**: Defines a helper function to create and write content to a file. In this case, it's used for the `Program.cs` file.
+
+*   **`ProgramCode = """..."""`**: Defines a multi-line string containing the C# code that interacts with PicoGK. This code:
+    *   Creates a PicoGK `Library` instance.
+    *   Creates a `Lattice` (a voxel-based representation).
+    *   Adds a beam to the lattice.
+    *   Converts the lattice to voxels and then to a mesh.
+    *   Saves the mesh as an STL file named `picogk.stl`.
+
+*   **`CreateProgramCS('Program.cs', ProgramCode)`**: Creates or overwrites the `Program.cs` file with the specified C# code.
+
+*   **`run_process = subprocess.run(['dotnet', 'run'], ...)`**: Executes the `dotnet run` command to run the .NET application. The `capture_output=True` argument captures the output (both standard output and standard error) of the command. The `text=True` argument decodes the output as text. The `cwd=project_directory` argument specifies the working directory for the command.  **This is the crucial command that builds and runs the .NET code.**
+
+*   **`if run_process.returncode == 0: ...`**: Checks the return code of the `dotnet run` command. If the return code is 0, the command executed successfully. Otherwise, an error occurred, and the error message is printed.
+
+*   **`# !dotnet run  # This command is already executed above!`**:  **This line is commented out to indicate that running `!dotnet run` again would be redundant. The previous `subprocess.run` call already executed the .NET application and printed any error messages to the Colab notebook output.**  If you were to run it again, it would simply repeat the same process. If there were compilation errors or other issues, the initial `!dotnet build` command would normally show these errors and the `subprocess.run` command will show any runtime errors.
+```
+
+**How to use:** Find where the second block of code is, and *overwrite* everything after it with this. This should line up the explanation for each line.
