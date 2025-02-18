@@ -4,7 +4,7 @@
 
 This repository contains a Colab notebook that demonstrates how to run PicoGK, a powerful geometry kernel, in headless mode within the Google Colaboratory environment. This allows you to perform geometric operations and computations without a graphical user interface, making it ideal for automated workflows, cloud-based processing, and batch processing.  This example creates a simple beam and saves it as an STL file.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://github.com/michaelp91-dev/PicoGK-Colab/blob/main/PicoGK_Colab.ipynb) 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/michaelp91-dev/PicoGK-Colab/blob/main/PicoGK_Colab.ipynb)
 
 ## What is PicoGK?
 
