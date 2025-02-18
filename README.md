@@ -55,3 +55,79 @@ The notebook is divided into two main code sections:
 !dotnet build
 !git clone https://github.com/michaelp91-dev/PicoGK.git
 ```
+*   **`!git clone --recursive https://github.com/michaelp91-dev/PicoGKRuntime.git`**: Clones the PicoGKRuntime repository, containing binaries and scripts for headless operation. The `--recursive` flag includes submodules.
+
+*   **`!sudo chmod +x PicoGKRuntime/Install_Dependencies/linux_x64.sh`**: Makes the installation script executable.
+
+*   **`!./PicoGKRuntime/Install_Dependencies/linux_x64.sh`**: Executes the installation script, installing required dependencies for the native PicoGK library.
+
+*   **`!sudo cp PicoGKRuntime/build/lib/*.so /usr/local/lib/`**: Copies the PicoGK shared object library (`.so` file) to the system's library directory.
+
+*   **`!sudo chmod +x /usr/local/lib/picogk.so`**: Makes the PicoGK library executable (not strictly necessary but doesn't hurt).
+
+*   **`!ldconfig`**: Updates the system's dynamic linker cache, allowing the system to find the PicoGK library.
+
+*   **`!dotnet new console -n PicoGK_Colab`**: Creates a new .NET console application named "PicoGK_Colab".
+
+*   **`%cd PicoGK_Colab`**: Changes the current directory to the .NET project directory (Colab-specific magic command).
+
+*   **`!dotnet build`**: Builds the .NET console application.
+
+*   **`!git clone https://github.com/michaelp91-dev/PicoGK.git`**: Clones the main PicoGK repository (may contain examples or documentation).
+
+### 2. PicoGK Geometry Generation and STL Export
+
+```python
+import os
+import subprocess
+
+# Specify the desired directory path
+project_directory = "/content/PicoGK_Colab"
+os.chdir(project_directory)
+current_directory = os.getcwd()
+print(f"Current working directory: ")
+
+def CreateProgramCS(file_name, code):
+  with open(file_name, 'w') as f:
+    f.write(code)
+
+  print("Program.cs has been written")
+
+ProgramCode = """
+using PicoGK;
+using System.Numerics;
+using System;
+try
+{
+    using (Library oLibrary = new(0.1f))
+    {
+      Lattice lat = new();
+      lat.AddBeam(  new(0,0,0),
+                    new(50,0,0),
+                    10,
+                    10,
+                    true);
+      Voxels vox = new(lat);
+      vox.mshAsMesh().SaveToStlFile("picogk.stl");
+    }
+}
+
+catch (Exception e)
+{
+    Console.Write(e.ToString());
+}
+"""
+
+CreateProgramCS('Program.cs', ProgramCode)
+
+# Execute 'dotnet run" to run the application
+run_process = subprocess.run(['dotnet', 'run'], capture_output=True, text=True, cwd=project_directory)
+if run_process.returncode == 0:
+  print("dotnet run executed successfully!")
+else:
+  print(f"Error executing dotnet run:\n{run_process.stderr}")
+
+# Debugging command (redundant, but kept for clarity)
+# !dotnet run  # This command is already executed above!
+```
+
