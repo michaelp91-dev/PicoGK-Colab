@@ -147,7 +147,7 @@ else:
 
 *   **`if run_process.returncode == 0: ...`**: Checks the return code of the `dotnet run` command. If the return code is 0, the command executed successfully. Otherwise, an error occurred, and the error message is printed.
 
-### 2. Debugging and Error Messages
+### 3. Debugging and Error Messages
 
 Sometimes, the .NET code in the second block might fail to run without providing clear error messages within the Colab notebook output. In such cases, executing the following command in a separate cell can help reveal the underlying errors:
 
