@@ -147,7 +147,14 @@ else:
 
 *   **`if run_process.returncode == 0: ...`**: Checks the return code of the `dotnet run` command. If the return code is 0, the command executed successfully. Otherwise, an error occurred, and the error message is printed.
 
-*   **`# !dotnet run  # This command is already executed above!`**:  **This line is commented out to indicate that running `!dotnet run` again would be redundant. The previous `subprocess.run` call already executed the .NET application and printed any error messages to the Colab notebook output.**  If you were to run it again, it would simply repeat the same process. If there were compilation errors or other issues, the initial `!dotnet build` command would normally show these errors and the `subprocess.run` command will show any runtime errors.
+### 2. Debugging and Error Messages
+
+Sometimes, the .NET code in the second block might fail to run without providing clear error messages within the Colab notebook output. In such cases, executing the following command in a separate cell can help reveal the underlying errors:
+
+```python
+!dotnet run
 ```
 
-**How to use:** Find where the second block of code is, and *overwrite* everything after it with this. This should line up the explanation for each line.
+*   **`!dotnet run`**:  This command attempts to run the compiled .NET application again.  By running it in a separate cell, the output is often more verbose and may reveal more detailed error messages than the initial execution in the second code block. If the second block runs without apparent errors, but no `picogk.stl` file is generated, this debugging step can be crucial for identifying the cause of the problem. The error messages may indicate issues with dependencies, file paths, or the PicoGK library itself. Make sure that after running the second block of code, you run this block and then read it. It may be a long log, but this often can provide context as to why the beam was not created.
+
+
